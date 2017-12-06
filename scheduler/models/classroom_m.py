@@ -1,6 +1,8 @@
 from django.db import models
 from djchoices import DjangoChoices, ChoiceItem
 
+from scheduler.string_name import NAME, NUM_OF_PEOPLE, CLASSROOM_TYPE
+
 
 class ClassroomInfo(models.Model):
     # Choices
@@ -21,6 +23,19 @@ class ClassroomInfo(models.Model):
                 return ClassroomInfo.Type.NORMAL
             elif string_of_classroom == '실습':
                 return ClassroomInfo.Type.PRACTICE
+
+    def get_model(self):
+        return {
+            NAME: self.name,
+            CLASSROOM_TYPE: self.classroom_type,
+            NUM_OF_PEOPLE: self.num_of_people,
+        }
+
+    def set_model(self, data):
+        set_data = ClassroomInfo(
+            name=data.get(NAME), num_of_people=data.get(NUM_OF_PEOPLE), classroom_type=data.get(CLASSROOM_TYPE)
+        )
+        set_data.save()
 
     name = models.CharField(max_length=100)
     num_of_people = models.IntegerField(null=True)
