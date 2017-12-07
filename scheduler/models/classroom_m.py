@@ -31,9 +31,11 @@ class ClassroomInfo(models.Model):
             NUM_OF_PEOPLE: self.num_of_people,
         }
 
-    def set_model(self, data):
+    def set_model(self, classroom_data):
+        self.objects.count()
         set_data = ClassroomInfo(
-            name=data.get(NAME), num_of_people=data.get(NUM_OF_PEOPLE), classroom_type=data.get(CLASSROOM_TYPE)
+            name=classroom_data.get(NAME), num_of_people=classroom_data.get(NUM_OF_PEOPLE),
+            classroom_type=classroom_data.get(CLASSROOM_TYPE)
         )
         set_data.save()
 

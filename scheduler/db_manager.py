@@ -9,7 +9,5 @@ def get_from_db(db_model):
 
 
 def set_db_data(db_model, data):
-    row_num = 0
     for insert in data:
         db_model.set_model(db_model, insert)
-        row_num += 1

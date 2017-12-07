@@ -1,7 +1,14 @@
 {% extends '_base.html' %}
 
 {% block content %}
-  <h3>강의실</h3>
-  {% load django_tables2 %}
-  {% render_table table %}
+
+    <div align="right">
+        <a href="{% url 'update_classroom' %}">
+            <h4><strong>강의실 업데이트</strong></h4>
+        </a>
+    </div>
+
+    <h3>강의실</h3>
+    {% load django_tables2 %}
+    {% render_table table %}
 {% endblock %}
