@@ -1,8 +1,9 @@
 from django.db import models
 from djchoices import DjangoChoices, ChoiceItem
 
+from scheduler.models.company_m import CompanyInfo
 from scheduler.string_name import NUM_OF_PEOPLE, MAJOR, GRADE, COMPLETION_TYPE, NAME, CREDIT, DURATION, \
-    DURATION_OF_THEORY, DURATION_OF_PRACTICE, PROFESSOR
+    DURATION_OF_THEORY, DURATION_OF_PRACTICE, PROFESSOR, COMPANY
 
 
 class SubjectInfo(models.Model):
@@ -37,6 +38,7 @@ class SubjectInfo(models.Model):
             DURATION_OF_PRACTICE: self.duration_of_practice,
             PROFESSOR: self.professor,
             NUM_OF_PEOPLE: self.num_of_people,
+            COMPANY: self.company_id,
         }
 
     def set_model(self, data):
@@ -45,7 +47,8 @@ class SubjectInfo(models.Model):
             major=data.get(MAJOR), grade=data.get(GRADE), completion_type=data.get(COMPLETION_TYPE),
             name=data.get(NAME), credit=data.get(CREDIT), duration=data.get(DURATION),
             duration_of_theory=data.get(DURATION_OF_THEORY), num_of_people=data.get(NUM_OF_PEOPLE),
-            duration_of_practice=data.get(DURATION_OF_PRACTICE), professor=data.get(PROFESSOR)
+            duration_of_practice=data.get(DURATION_OF_PRACTICE), professor=data.get(PROFESSOR),
+            company=data.get(COMPANY)
         )
         set_data.save()
 
@@ -59,3 +62,4 @@ class SubjectInfo(models.Model):
     duration_of_practice = models.IntegerField(null=True)           # 실습 시간
     professor = models.CharField(null=True, max_length=100)         # 교수님
     num_of_people = models.IntegerField(null=True)                  # 수강인원
+    company = models.ForeignKey(CompanyInfo, on_delete=models.CASCADE)

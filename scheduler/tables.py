@@ -1,9 +1,11 @@
 import django_tables2 as tables
+from django_tables2.utils import A
 
 from scheduler.models.classroom_m import ClassroomInfo
+from scheduler.models.company_m import CompanyInfo
 from scheduler.models.subject_m import SubjectInfo
-from scheduler.string_name import NAME, NUM_OF_PEOPLE, CLASSROOM_TYPE, MAJOR, GRADE, COMPLETION_TYPE,\
-    CREDIT, DURATION, DURATION_OF_THEORY, DURATION_OF_PRACTICE, PROFESSOR
+from scheduler.string_name import NAME, NUM_OF_PEOPLE, CLASSROOM_TYPE, MAJOR, GRADE, COMPLETION_TYPE, \
+    CREDIT, DURATION, DURATION_OF_THEORY, DURATION_OF_PRACTICE, PROFESSOR, FIELD, TERM, DATE
 
 
 class ClassroomTable(tables.Table):
@@ -38,4 +40,21 @@ class SubjectTable(tables.Table):
     class Meta:
         fields = []
         model = SubjectInfo
+        template = 'django_tables2/bootstrap.html'
+
+
+class CompanyTable(tables.Table):
+    id = tables.LinkColumn(viewname='edit_company', args=[A('pk')], verbose_name="편집")
+    name = tables.LinkColumn(viewname='classroom_list', args=[A('id')], verbose_name="학교", accessor=NAME)
+    field_of = tables.Column(verbose_name="전공", accessor=FIELD)
+    term = tables.Column(verbose_name="학기", accessor=TERM)
+    date = tables.DateTimeColumn(verbose_name="날짜", format="Y-m-d H:i")
+    sheet_name = tables.Column(verbose_name="google sheet name", accessor="sheet_name")
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyTable, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = CompanyInfo
+        fields = ["id", NAME, FIELD, TERM, DATE, "sheet_name"]
         template = 'django_tables2/bootstrap.html'

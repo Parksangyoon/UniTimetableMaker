@@ -15,6 +15,12 @@ DURATION_OF_THEORY = 'duration_of_theory'
 DURATION_OF_PRACTICE = 'duration_of_practice'
 PROFESSOR = 'professor'
 
+# company string
+FIELD = "field_of"
+TERM = "term"
+DATE = "date"
+COMPANY = "company"
+
 # key name list
 SHEET_SUBJECT = ['개설전공', '학년', '이수구분', '교과목명', '학점', '시간', '이론시간', '실습시간', '담당교수', '제한인원']
 SUBJECT_KEY_NAME = [MAJOR, GRADE, COMPLETION_TYPE, NAME, CREDIT, DURATION, DURATION_OF_THEORY,

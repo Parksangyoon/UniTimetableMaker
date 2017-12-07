@@ -1,0 +1,64 @@
+{% extends '_base.html' %}
+
+{% block content %}
+  <div class="container">
+      <div class="panel panel-primary">
+          <div id="channelAddPanelTitle" class="panel-heading">
+              <h3 class="panel-title"><a href="javascript:void(0)">클릭하여 추가 채널 입력</a></h3>
+          </div>
+          <div id="channelAddPanelBody" class="panel-body" hidden>
+              <form class="form-horizontal" action="{% url 'update_classroom'%}" method="post">
+                  {% csrf_token %}
+                  <br>
+                  <a href="http://m.skbroadband.com/content/realtime/Channel_List.do"><h4>채널 편성표 홈페이지로 이동</h4></a>
+                  <fieldset>
+                      <div class="col-md-5">
+                          <div class="form-group label-floating" style="padding-right:10px;">
+                              <label for="channelName" class="control-label">채널 이름</label>
+                              <input type="text" name="channel_name" class="form-control" id="channelName" required>
+                              <span class="help-block"></span>
+                              {% csrf_token %}
+                          </div>
+                      </div>
+                      <div class="col-md-5">
+                          <div class="form-group label-floating" style="padding-right:10px;">
+                              <label for="channelUrl" class="control-label">채널 편성표 URL</label>
+                              <input type="text" name="channel_url" class="form-control" id="channelUrl" required>
+                              <span class="help-block"></span>
+                              {% csrf_token %}
+                          </div>
+                      </div>
+                      <div class="col-md-2 col-md-offset-0 col-xs-4 col-xs-offset-8">
+                          <div class="form-group" style="margin-top:18px;">
+                              <button type="submit" class="btn btn-primary btn-lg btn-block">채널 추가</button>
+                          </div>
+                      </div>
+                  </fieldset>
+              </form>
+          </div>
+      </div>
+
+      <style>
+          #channelAddPanelTitle:hover {
+              color:white;
+              cursor: pointer;
+          }
+          #channelAddPanelTitle a:hover {
+              color:white;
+              text-decoration: none;
+          }
+          #channelAddPanelBody {
+              padding-top: 0;
+              padding-bottom: 0;
+          }
+      </style>
+
+      <script>
+          $(document).ready(function() {
+              $('#channelAddPanelTitle').click(function() {
+                  $('#channelAddPanelBody').toggle();
+              });
+          });
+      </script>
+  </div>
+{% endblock %}

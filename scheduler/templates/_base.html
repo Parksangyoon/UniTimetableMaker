@@ -36,7 +36,7 @@
                 background-position: top;
             }
         </style>
-        {% block head %}
+        {% block css %}
         {% endblock %}
     </head>
     <body>
@@ -53,10 +53,7 @@
                 </div>
                 <div class="navbar-collapse collapse navbar-responsive-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="{% url 'classroom_list' %}">강의실</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav">
-                        <li><a href="{% url 'subject_list' %}">과목</a></li>
+                        <li><a href="{% url 'home' %}">홈 화면</a></li>
                     </ul>
                 </div>
             </div>

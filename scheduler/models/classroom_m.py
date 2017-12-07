@@ -1,7 +1,8 @@
 from django.db import models
 from djchoices import DjangoChoices, ChoiceItem
 
-from scheduler.string_name import NAME, NUM_OF_PEOPLE, CLASSROOM_TYPE
+from scheduler.models.company_m import CompanyInfo
+from scheduler.string_name import NAME, NUM_OF_PEOPLE, CLASSROOM_TYPE, COMPANY
 
 
 class ClassroomInfo(models.Model):
@@ -29,16 +30,18 @@ class ClassroomInfo(models.Model):
             NAME: self.name,
             CLASSROOM_TYPE: self.classroom_type,
             NUM_OF_PEOPLE: self.num_of_people,
+            COMPANY: self.company_id,
         }
 
-    def set_model(self, classroom_data):
+    def set_model(self, data):
         self.objects.count()
         set_data = ClassroomInfo(
-            name=classroom_data.get(NAME), num_of_people=classroom_data.get(NUM_OF_PEOPLE),
-            classroom_type=classroom_data.get(CLASSROOM_TYPE)
+            name=data.get(NAME), num_of_people=data.get(NUM_OF_PEOPLE), classroom_type=data.get(CLASSROOM_TYPE),
+            company=data.get(COMPANY)
         )
         set_data.save()
 
     name = models.CharField(max_length=100)
     num_of_people = models.IntegerField(null=True)
     classroom_type = models.IntegerField(choices=Type.choices)
+    company = models.ForeignKey(CompanyInfo, on_delete=models.CASCADE)

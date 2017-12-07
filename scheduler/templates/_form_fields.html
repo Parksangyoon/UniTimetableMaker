@@ -1,0 +1,17 @@
+{% load widget_tweaks %}
+
+{% for field in form %}
+  <div class="col-md-12">
+    <div class="form-group label-floating{% if field.errors %}{{ ' has-error' }}{% endif %}">
+      <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+      {{ field|add_class:'form-control' }}
+      {% if field.help_text %}
+        <span class="help-block">{{ field.help_text }}</span>
+      {% endif %}
+      {% for error in field.errors %}
+        <span class="help-block">{{ error|escape }}</span>
+      {% endfor %}
+      {% csrf_token %}
+    </div>
+  </div>
+{% endfor %}

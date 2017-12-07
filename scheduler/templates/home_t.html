@@ -1,5 +1,60 @@
 {% extends '_base.html' %}
 
 {% block content %}
-  <h3>홈페이지 제작 중</h3>
+    <div>
+        <h5>학교를 등록하고 구글 시트를 생성 혹은 사용하던 시트에서
+            <strong>"sang-2@timetable-184603.iam.gserviceaccount.com"</strong> 를 공유하고 등록 하십시오.</h5>
+    </div>
+    <div class="panel panel-primary">
+        <div id="addCompanyPanelTitle" class="panel-heading">
+            <h3 class="panel-title">
+                <a href="javascript:void(0)">학교 등록</a>
+            </h3>
+        </div>
+        <div id="addCompanyPanelBody" class="panel-body" {% if not form.errors and not show_add_company_panel %}hidden{% endif %}>
+            <form class="form-horizontal" action="" method="POST">
+                {% csrf_token %}
+                <fieldset>
+                    {% include '_form_fields.html' with form=form %}
+                    <div class="col-xs-2 col-xs-offset-10 col-md-1 col-md-offset-11">
+                        <div class="form-group" style="margin-top:18px;">
+                            {% if not is_update %}
+                                <button type="submit" class="btn btn-primary btn-block">추가</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-primary btn-block" name="edit" value="Edit">수정</button>
+                                <button type="submit" class="btn btn-primary btn-block" name="delete" value="Delete" onclick="return confirm(' 정말 삭제하시겠습니까? ');">삭제</button>
+                                <button type="submit" class="btn btn-primary btn-block" name="cancel" value="Cancel">취소</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        #addCompanyPanelTitle:hover {
+            color:white;
+            cursor: pointer;
+        }
+        #addCompanyPanelTitle a:hover {
+            color:white;
+            text-decoration: none;
+        }
+        #addCompanyPanelBody {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $('#addCompanyPanelTitle').click(function() {
+                $('#addCompanyPanelBody').toggle();
+            });
+        });
+    </script>
+
+    {% load django_tables2 %}
+    {% render_table table %}
 {% endblock %}

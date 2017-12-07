@@ -1,0 +1,22 @@
+{% extends '_base.html' %}
+
+{% block header %}
+    <div class="navbar navbar-inverse" style="margin-top:-20px;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="javascript:void(0)"><strong>{{ company_name }}</strong></a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'classroom_list' company_id=company_id %}">강의실</a></li>
+                    <li><a href="{% url 'subject_list' company_id=company_id %}">과목</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

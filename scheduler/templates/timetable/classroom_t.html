@@ -1,9 +1,9 @@
-{% extends '_base.html' %}
+{% extends 'timetable/_base.html' %}
 
 {% block content %}
 
     <div align="right">
-        <a href="{% url 'update_classroom' %}">
+        <a href="{% url 'update_classroom' company_id=company_id %}">
             <h4><strong>강의실 업데이트</strong></h4>
         </a>
     </div>
