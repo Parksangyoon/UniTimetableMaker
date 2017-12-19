@@ -2,7 +2,7 @@ from django.db import models
 from djchoices import DjangoChoices, ChoiceItem
 
 from scheduler.models.company_m import CompanyInfo
-from scheduler.string_name import NAME, NUM_OF_PEOPLE, CLASSROOM_TYPE, COMPANY
+from scheduler.string_name import NAME, NUM_OF_PEOPLE, CLASSROOM_TYPE, COMPANY, SCHEDULE, RANGE_FROM, RANGE_TO
 
 
 class ClassroomInfo(models.Model):
@@ -20,9 +20,9 @@ class ClassroomInfo(models.Model):
 
         @classmethod
         def from_string(cls, string_of_classroom):
-            if string_of_classroom == '일반':
+            if '일반' in string_of_classroom:
                 return ClassroomInfo.Type.NORMAL
-            elif string_of_classroom == '실습':
+            elif '실습' in string_of_classroom:
                 return ClassroomInfo.Type.PRACTICE
 
     def get_model(self):
@@ -31,13 +31,17 @@ class ClassroomInfo(models.Model):
             CLASSROOM_TYPE: self.classroom_type,
             NUM_OF_PEOPLE: self.num_of_people,
             COMPANY: self.company_id,
+            SCHEDULE: self.schedule,
+            RANGE_FROM: self.range_from,
+            RANGE_TO: self.range_to,
         }
 
     def set_model(self, data):
         self.objects.count()
         set_data = ClassroomInfo(
-            name=data.get(NAME), num_of_people=data.get(NUM_OF_PEOPLE), classroom_type=data.get(CLASSROOM_TYPE),
-            company=data.get(COMPANY)
+            name=data.get(NAME), num_of_people=data.get(NUM_OF_PEOPLE), company=data.get(COMPANY),
+            schedule=data.get(SCHEDULE), classroom_type=data.get(CLASSROOM_TYPE), range_from=data.get(RANGE_FROM),
+            range_to=data.get(RANGE_TO),
         )
         set_data.save()
 
@@ -45,3 +49,6 @@ class ClassroomInfo(models.Model):
     num_of_people = models.IntegerField(null=True)
     classroom_type = models.IntegerField(choices=Type.choices)
     company = models.ForeignKey(CompanyInfo, on_delete=models.CASCADE)
+    range_from = models.IntegerField(null=True)
+    range_to = models.IntegerField(null=True)
+    schedule = models.CharField(null=True, max_length=100)

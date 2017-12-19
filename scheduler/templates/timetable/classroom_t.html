@@ -8,7 +8,24 @@
         </a>
     </div>
 
-    <h3>강의실</h3>
-    {% load django_tables2 %}
-    {% render_table table %}
+    <h3><strong>강의실</strong></h3>
+
+    <form class="form-horizontal" action="{% url 'set_classroom_range' company_id=company_id %}" method="POST" style="margin-top:-20px;">
+        {% csrf_token %}
+        <fieldset>
+            <div class="col-md-4" style="padding-top:16px;">
+                시간대 범위를 입력해 주세요 :
+                <input type="number" name="range_from" min="0" style="width: 50px" autofocus="autofocus">
+                ~
+                <input type="number" name="range_to" min="0" style="width: 50px">
+            </div>
+            <div class="col-md-2" style="padding-top:16px;">전체 선택 <input type="checkbox" name="select_all" value="all"></div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-block">select</button>
+                {% csrf_token %}
+            </div>
+        </fieldset>
+        {% load django_tables2 %}
+        {% render_table table %}
+    </form>
 {% endblock %}

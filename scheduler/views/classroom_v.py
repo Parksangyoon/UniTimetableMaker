@@ -6,7 +6,9 @@ from scheduler.db_manager import set_db_data
 from scheduler.google_sheet import read_sheet
 from scheduler.models.classroom_m import ClassroomInfo
 from scheduler.models.company_m import CompanyInfo
-from scheduler.string_name import CLASSROOM_TYPE, CLASSROOM_KEY_NAME, SHEET_CLASSROOM, COMPANY
+from scheduler.string_name import CLASSROOM_TYPE, CLASSROOM_KEY_NAME, SHEET_CLASSROOM, COMPANY, SCHEDULE, RANGE_FROM, \
+    RANGE_TO
+from scheduler.util import list_to_str
 from ..tables import ClassroomTable
 from ..views.common_v import request_table_config
 
@@ -18,8 +20,6 @@ class ClassroomListView(ListView):
 
     def get_queryset(self):
         classroom_list = ClassroomInfo.objects.filter(company_id=self.kwargs['company_id'])
-        if classroom_list.__len__() is 0:
-            get_classroom_list(self.kwargs['company_id'])
         return classroom_list
 
     def get(self, request, *args, **kwargs):
@@ -50,15 +50,44 @@ def get_classroom_list(company_id):
     classrooms_of_sheet = sheet.get_all_records(head=1)
     classroom_list = []
     classroom = dict()
-    classroom.keys()
     for dict_data in classrooms_of_sheet:
         for data in dict_data.keys():
             if '종류' in data:
-                classroom[CLASSROOM_TYPE] = ClassroomInfo.Type.from_string(dict_data[data])
+                classroom[CLASSROOM_TYPE] = ClassroomInfo.Type.from_string(dict_data.get(data))
             else:
-                classroom[CLASSROOM_KEY_NAME[SHEET_CLASSROOM.index(data)]] = dict_data[data]
+                classroom[CLASSROOM_KEY_NAME[SHEET_CLASSROOM.index(data)]] = dict_data.get(data)
         classroom[COMPANY] = company_data
+        schedule_list = [[] for i in range(7)]
+        classroom[SCHEDULE] = list_to_str(schedule_list)
         classroom_list.append(classroom)
         classroom = dict()
     set_db_data(ClassroomInfo, classroom_list)
+    return redirect('classroom_list', company_id=company_id)
+
+
+def set_classroom(request, company_id):
+    if request.method == 'POST':
+        selected_subject_list = request.POST.getlist('select_classroom')
+        range_from = request.POST.get(RANGE_FROM)
+        range_to = request.POST.get(RANGE_TO)
+        select_all = request.POST.get("select_all")
+
+        if range_from is '':
+            range_from = 9
+        if range_to is '':
+            range_to = 18
+
+        if select_all is not None:
+            classroom_list = ClassroomInfo.objects.filter(company_id=company_id)
+            for classroom in classroom_list:
+                classroom.range_from = range_from
+                classroom.range_to = range_to
+                classroom.save()
+        else:
+            for classroom_id in selected_subject_list:
+                classroom = ClassroomInfo.objects.get(id=classroom_id)
+                classroom.range_from = range_from
+                classroom.range_to = range_to
+                classroom.save()
+
     return redirect('classroom_list', company_id=company_id)
