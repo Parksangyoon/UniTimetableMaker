@@ -1,0 +1,27 @@
+{% extends 'timetable/_base.html' %}
+
+{% block content %}
+    <h3><strong>과목 리스트</strong></h3>
+    <form class="form-horizontal" action="{% url 'set_timetable' company_id=company_id %}" method="POST" style="margin-top:-20px;">
+        {% csrf_token %}
+        <fieldset>
+            <div class="col-md-4" style="padding-top:21px;">
+                타입 :
+                <select name="timetable_type">
+                    <option value="normal">Normal</option>
+                    <option value="all_different">AllDifferent</option>
+                </select>
+            </div>
+            <div class="col-md-4" style="padding-top:21px;">전체 선택 <input type="checkbox" name="select_all" value="all"></div>
+            <div class="col-md-2" style="margin-left:100px;">
+                <button type="submit" class="btn btn-primary btn-block"><h5><strong>시간표 구성</strong></h5></button>
+                {% csrf_token %}
+            </div>
+        </fieldset>
+        {% load django_tables2 %}
+        {% render_table before_table %}
+    </form>
+    <h3><strong>시간표</strong></h3>
+    {% load django_tables2 %}
+    {% render_table after_table %}
+{% endblock %}
