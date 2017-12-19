@@ -128,12 +128,11 @@ class CompanyUpdateView(UpdateView):
         context['form'] = form
         context['is_update'] = True
 
-        object = CompanyInfo.objects.all()
+        company = CompanyInfo.objects.all()
 
-        table = CompanyTable(object)
+        table = CompanyTable(company)
         request_table_config(request, table)
         context['table'] = table
         context['is_update'] = True
 
         return self.render_to_response(context)
-

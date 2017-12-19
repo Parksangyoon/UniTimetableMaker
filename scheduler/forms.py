@@ -1,6 +1,5 @@
 from django import forms
 from django.forms import ModelForm, SelectDateWidget
-from django.core.exceptions import ValidationError
 
 from scheduler.models.company_m import CompanyInfo
 from scheduler.string_name import NAME, FIELD, TERM, DATE
