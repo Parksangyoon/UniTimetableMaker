@@ -35,6 +35,14 @@ class SubjectListView(ListView):
 
 
 def update_subject(request, company_id):
+    classroom_list = ClassroomInfo.objects.filter(company_id=company_id)
+
+    if classroom_list.__sizeof__() is not 0:
+        schedule_list = [[] for i in range(7)]
+        for classroom in classroom_list:
+            classroom.schedule = schedule_list
+            classroom.save()
+
     subject_list = SubjectInfo.objects.all()
     for subject in subject_list:
         subject.delete()
