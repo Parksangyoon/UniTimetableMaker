@@ -13,6 +13,10 @@ from ..tables import ClassroomTable
 from ..views.common_v import request_table_config
 
 
+CLASSROOM_RANGE_FROM = 9
+CLASSROOM_RANGE_TO = 19
+
+
 class ClassroomListView(ListView):
     template_name = 'timetable/classroom_t.html'
     model = ClassroomInfo
@@ -50,6 +54,7 @@ def get_classroom_list(company_id):
     classrooms_of_sheet = sheet.get_all_records(head=1)
     classroom_list = []
     classroom = dict()
+    schedule_list = [[] for i in range(7)]
     for dict_data in classrooms_of_sheet:
         for data in dict_data.keys():
             if '종류' in data:
@@ -57,8 +62,9 @@ def get_classroom_list(company_id):
             else:
                 classroom[CLASSROOM_KEY_NAME[SHEET_CLASSROOM.index(data)]] = dict_data.get(data)
         classroom[COMPANY] = company_data
-        schedule_list = [[] for i in range(7)]
         classroom[SCHEDULE] = list_to_str(schedule_list)
+        classroom[RANGE_FROM] = CLASSROOM_RANGE_FROM
+        classroom[RANGE_TO] = CLASSROOM_RANGE_TO
         classroom_list.append(classroom)
         classroom = dict()
     set_db_data(ClassroomInfo, classroom_list)
@@ -73,9 +79,9 @@ def set_classroom(request, company_id):
         select_all = request.POST.get("select_all")
 
         if range_from is '':
-            range_from = 9
+            range_from = CLASSROOM_RANGE_FROM
         if range_to is '':
-            range_to = 18
+            range_to = CLASSROOM_RANGE_TO
 
         if select_all is not None:
             classroom_list = ClassroomInfo.objects.filter(company_id=company_id)
