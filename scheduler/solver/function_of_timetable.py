@@ -12,13 +12,20 @@ def assign_to_different_time(data_list, week):
     # 솔버 변수 선언
     sequence_data_list = list()
     for data in data_list:
-        duration_var = solver.FixedDurationIntervalVar(data.get('range_from'),
-                                                       data.get('range_to'),
+        classroom = data.get(CLASSROOM)
+        range_from = data.get('range_from')
+        range_to = data.get('range_to')
+        if range_from < classroom.range_from:
+            range_from = classroom.range_from
+        if range_to > classroom.range_to:
+            range_to = classroom.range_to
+        duration_var = solver.FixedDurationIntervalVar(range_from,
+                                                       range_to,
                                                        data.get('duration'),
                                                        False,
                                                        "sub {}".format(data.get(ID)))
         # 각각의 범위 값들이 특정 값을 포함하지 않도록 제약
-        classroom = data.get(CLASSROOM)
+
         avoid_date_string = classroom.schedule
         avoid_date_list = str_to_list(avoid_date_string)[week]
         try:
@@ -32,7 +39,6 @@ def assign_to_different_time(data_list, week):
     disjunctive_constraint = solver.DisjunctiveConstraint(sequence_data_list, 'duration')
     sequence_var = disjunctive_constraint.SequenceVar()
     solver.Add(disjunctive_constraint)
-    print(data.EndExpr() for data in sequence_data_list)
     obj_var = solver.Max([data.EndExpr() for data in sequence_data_list])
     objective_monitor = solver.Minimize(obj_var, 1)
 
