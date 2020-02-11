@@ -1,6 +1,6 @@
 certifi==2017.11.5
 chardet==3.0.4
-Django==2.0
+Django==2.2.10
 django-choices==1.6.0
 django-common-helpers==0.9.1
 django-tables2==1.16.0
